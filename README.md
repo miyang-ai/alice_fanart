@@ -2,10 +2,22 @@
 
 Alice（白艾莉）与洛小山的二创素材库：官方参考图、垫图规范、提示词和成图案例。
 
-<p>
-  <img src="outputs/2026-09-01_mid_autumn_moon_rabbit_Alice中秋赏月/alice_mid_autumn_lantern_chibi_v8.png" width="32%" alt="Alice 中秋赏月" />
-  <img src="outputs/2026-10-01_national_day_splash_Alice国庆开屏/alice_national_day_splash_v3.png" width="32%" alt="Alice 国庆开屏" />
-  <img src="outputs/2026-09-30_terrace_study_Alice与洛小山露台共学/alice_luoxiaoshan_terrace_study_v1.png" width="32%" alt="Alice 与洛小山露台共学" />
+<p align="center">
+  <img src="outputs/2026-10-01_readme_cover_Alice二创封面/alice_luoxiaoshan_readme_cover_v1.png" alt="Alice Fanart · 白艾莉 · 洛小山 二创素材库" />
+</p>
+
+## 她的朋友们
+
+Alice 有十三位虚构朋友，参考图都在 [`refs/alice_friends/`](refs/alice_friends/)，可以和她同框创作。
+
+<p align="center">
+  <img src="docs/images/alice_friends_roster.jpg" width="70%" alt="Alice 的十三位朋友" />
+</p>
+
+## 和洛小山一起
+
+<p align="center">
+  <img src="outputs/2026-09-30_terrace_study_Alice与洛小山露台共学/alice_luoxiaoshan_terrace_study_v1.png" width="60%" alt="Alice 与洛小山露台共学" />
 </p>
 
 ## 目录
