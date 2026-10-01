@@ -1,0 +1,145 @@
+[
+  {
+    "dir": "01_researcher_陈知远",
+    "id": "researcher",
+    "name": "陈知远",
+    "englishName": "Ken Chen",
+    "title": "调研员",
+    "age": 29,
+    "city": "深圳南山",
+    "hometown": "广东汕头",
+    "gaze": "right"
+  },
+  {
+    "dir": "02_translator_林晓雨",
+    "id": "translator",
+    "name": "林晓雨",
+    "englishName": "Sherry Lin",
+    "title": "翻译官",
+    "age": 27,
+    "city": "杭州西湖区",
+    "hometown": "浙江宁波",
+    "gaze": "left"
+  },
+  {
+    "dir": "03_writer_方以南",
+    "id": "writer",
+    "name": "方以南",
+    "englishName": "Yinan",
+    "title": "作家",
+    "age": 31,
+    "city": "成都青羊区",
+    "hometown": "四川乐山",
+    "gaze": "left"
+  },
+  {
+    "dir": "04_voice_苏墨",
+    "id": "voice",
+    "name": "苏墨",
+    "englishName": "Mo",
+    "title": "配音",
+    "age": 25,
+    "city": "北京朝阳",
+    "hometown": "吉林长春",
+    "gaze": "front"
+  },
+  {
+    "dir": "05_designer_周念",
+    "id": "designer",
+    "name": "周念",
+    "englishName": "Nina Zhou",
+    "title": "设计师",
+    "age": 28,
+    "city": "上海徐汇",
+    "hometown": "江苏苏州",
+    "gaze": "right"
+  },
+  {
+    "dir": "06_artist_叶初",
+    "id": "artist",
+    "name": "叶初",
+    "englishName": "Chu",
+    "title": "画师",
+    "age": 24,
+    "city": "广州海珠区",
+    "hometown": "江西景德镇",
+    "gaze": "left"
+  },
+  {
+    "dir": "07_analyst_魏博",
+    "id": "analyst",
+    "name": "魏博",
+    "englishName": "Bo Wei",
+    "title": "分析师",
+    "age": 30,
+    "city": "长沙岳麓",
+    "hometown": "湖南株洲",
+    "gaze": "front"
+  },
+  {
+    "dir": "08_quant_邢斐",
+    "id": "quant",
+    "name": "邢斐",
+    "englishName": "Faye Xing",
+    "title": "量化分析师",
+    "age": 27,
+    "city": "上海浦东",
+    "hometown": "山东青岛",
+    "gaze": "front"
+  },
+  {
+    "dir": "09_novelist_沈遥",
+    "id": "novelist",
+    "name": "沈遥",
+    "englishName": "Yao Shen",
+    "title": "小说家",
+    "age": 33,
+    "city": "厦门思明区",
+    "hometown": "福建漳州",
+    "gaze": "left"
+  },
+  {
+    "dir": "10_developer_张予",
+    "id": "developer",
+    "name": "张予",
+    "englishName": "Yu Zhang",
+    "title": "开发",
+    "age": 28,
+    "city": "珠海香洲",
+    "hometown": "广西柳州",
+    "gaze": "front"
+  },
+  {
+    "dir": "11_docsmith_陆析",
+    "id": "docsmith",
+    "name": "陆析",
+    "englishName": "Lu Xi",
+    "title": "文档工程师",
+    "age": 30,
+    "city": "深圳南山",
+    "hometown": "江苏无锡",
+    "gaze": "right"
+  },
+  {
+    "dir": "12_critic_顾辛",
+    "id": "critic",
+    "name": "顾辛",
+    "englishName": "Xin Gu",
+    "title": "内容评论家",
+    "age": 32,
+    "city": "北京朝阳",
+    "hometown": "河北保定",
+    "gaze": "right"
+  },
+  {
+    "dir": "13_scholar_谢清",
+    "id": "scholar",
+    "name": "谢清",
+    "englishName": "Qing Xie",
+    "title": "论文阅读伴侣",
+    "age": 28,
+    "city": "北京海淀",
+    "hometown": "湖北武汉",
+    "gaze": "right"
+  }
+]

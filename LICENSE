@@ -1,0 +1,109 @@
+Alice 二创许可协议（Alice Fanart License）v1.0
+
+版权所有 © 2026 米羊科技（上海）有限公司（以下称"权利人"）。保留所有未在本协议中明示授予的权利。
+联系与商业授权：connect@miyang.ai
+
+本协议以中文版本为准。文末附英文参考译本，两者不一致时以中文为准。
+
+------------------------------------------------------------
+一、适用范围
+------------------------------------------------------------
+
+本协议适用于本仓库的全部内容（"本仓库内容"），包括：
+
+1. 角色形象与美术素材：AI Agent 产品"白艾莉（英文名 Alice）"和"洛小山"的形象、名称、设定表、衣柜、三视图、成图案例、提示词存档，以及 `refs/alice_friends/` 中的虚构角色（合称"角色素材"）；
+2. 米羊科技 Logo（`refs/logo/`）；
+3. 文档、规范、提示词模板；
+4. 脚本与工作流代码（`scripts/`、`workflows/`）。
+
+使用、复制、修改或分发本仓库内容的任何部分，即视为接受本协议全部条款。不接受的，请勿使用。
+
+------------------------------------------------------------
+二、授予你的权利
+------------------------------------------------------------
+
+在遵守本协议的前提下，权利人授予你一项全球范围内的、免费的、非独占的、不可转让的、不可再许可的授权，仅限**非商业目的**，可以：
+
+1. 学习、研究、欣赏本仓库内容；
+2. 基于角色素材进行二次创作（同人插画、漫画、壁纸、头像、短视频、文章配图等，"二创作品"），并在非商业场合发布、分享；
+3. 完整复制并分发本仓库（必须同时附带本协议）；
+4. 运行、修改本仓库的脚本与工作流代码，用于你自己的非商业项目。
+
+------------------------------------------------------------
+三、使用条件
+------------------------------------------------------------
+
+1. **声明来源**：公开发布二创作品时，须以清晰方式注明："Alice（白艾莉）/ 洛小山为米羊科技（上海）有限公司的角色形象，本作品为非官方二创。"
+2. **保留协议**：分发本仓库或其任何实质部分时，须保留本协议全文与版权声明。
+3. **不得暗示关联**：未经权利人书面许可，不得以任何方式明示或暗示你或你的作品与权利人存在合作、联名、官方委托、背书或其他关联关系。
+4. **Logo 的使用**：米羊科技 Logo 仅可用于如实说明素材来源，不得作为你自己的作品、账号、产品或服务的标识，也不得用于注册商标。
+
+------------------------------------------------------------
+四、禁止行为
+------------------------------------------------------------
+
+未经权利人事先书面同意，你不得：
+
+1. **商业使用**：将角色素材或二创作品用于任何商业目的，包括但不限于销售、付费分发、广告与营销、周边商品、表情包或贴纸（含上架各类表情开放平台）、数字藏品、付费内容、接受赞助或打赏的变现，以及以商业为目的训练或微调模型来复刻角色。需要商业使用的，请联系 connect@miyang.ai 另行取得书面授权。
+2. **恶意改编**：以任何方式丑化、污名化、侮辱、诋毁角色或权利人，或损害角色与权利人声誉，包括但不限于：
+   - 色情、低俗、裸露或性暗示内容（Alice 在所有二创中须着完整、适合公开场合的服装）；
+   - 暴力血腥、恐怖、赌博、毒品等内容；
+   - 仇恨、歧视、政治敏感或违反法律法规的内容；
+   - 以角色的名义发表言论、制造虚假信息，或用于诈骗、虚假宣传、网络攻击。
+3. **冒用身份**：冒充权利人或其官方账号；注册含"Alice""白艾莉""洛小山""米羊"的商标、域名、账号、店铺名以误导公众；对角色素材申请商标、著作权登记或其他权利。
+4. **转让与再许可**：将角色素材转让、出租、再许可给任何第三方，或声称你对角色素材享有任何权利。
+5. **侵犯第三方权益**：二创作品不得侵犯任何第三方的著作权、商标权、肖像权、名誉权及其他合法权益；你使用的全部素材均应已获合法授权，或属于公有领域、合理使用范围。
+
+------------------------------------------------------------
+五、权利归属
+------------------------------------------------------------
+
+1. 角色素材及其中全部知识产权（包括著作权、商标权等）归权利人所有。你不因本协议或二创行为取得对角色素材的任何权利。
+2. 二创作品中由你独立创作的原创部分，其著作权归你所有；但二创作品中包含的角色形象、名称及其他源自角色素材的部分，权利仍归权利人所有。你对二创作品的任何使用、许可或转让，均不得侵犯权利人对角色素材享有的权利。
+
+------------------------------------------------------------
+六、违约与责任
+------------------------------------------------------------
+
+1. 你违反本协议任何条款的，本协议授予你的全部权利自违约之时起自动终止。你须立即停止使用角色素材，删除或下架相关二创作品。
+2. 对于第四条第 2、3 项所列恶意改编与冒用行为，以及商业使用行为，权利人保留依法追究你法律责任的权利，包括但不限于：要求停止侵权、消除影响、公开赔礼道歉、赔偿全部损失（含维权所支出的合理费用，如公证费、律师费等）、向相关平台投诉下架，以及提起诉讼或仲裁。
+3. 因你的二创作品或你违反本协议的行为，导致权利人遭受第三方索赔、诉讼、仲裁、行政处罚或平台处理的，由你承担全部赔偿责任及权利人为此支出的费用。
+4. 本条责任不因本协议终止而免除。
+
+------------------------------------------------------------
+七、免责声明
+------------------------------------------------------------
+
+本仓库内容按"现状"提供，权利人不作任何明示或默示的担保。在法律允许的最大范围内，权利人不对你使用本仓库内容所造成的任何损失承担责任。
+
+------------------------------------------------------------
+八、其他
+------------------------------------------------------------
+
+1. 权利人可发布新版本协议。新版本对其发布之后获取的本仓库内容生效；对于恶意使用，权利人可随时书面通知终止你的授权。
+2. 本协议适用中华人民共和国法律。因本协议产生的争议，双方应先友好协商；协商不成的，提交权利人住所地有管辖权的人民法院解决。
+3. 本协议任何条款被认定无效的，不影响其他条款的效力。
+
+------------------------------------------------------------
+English Reference Translation (the Chinese version prevails)
+------------------------------------------------------------
+
+Alice Fanart License v1.0
+Copyright (c) 2026 Miyang Technology (Shanghai) Co., Ltd. ("Licensor"). All rights not expressly granted are reserved.
+Contact / commercial licensing: connect@miyang.ai
+
+1. Scope. This license covers everything in this repository: the character assets (Alice / "白艾莉", "洛小山" / Luo Xiaoshan, the fictional friends in refs/alice_friends, reference sheets, wardrobe, artwork, prompt archives), the Miyang logo, documentation, and code. Using, copying, modifying or distributing any part means you accept this license.
+
+2. What you may do. For non-commercial purposes only, you get a worldwide, royalty-free, non-exclusive, non-transferable, non-sublicensable license to: study the content; create and non-commercially share fan works based on the character assets; redistribute the repository with this license attached; run and modify the code for your own non-commercial projects.
+
+3. Conditions. (a) When you publish a fan work, state clearly: "Alice / Luo Xiaoshan are characters of Miyang Technology (Shanghai) Co., Ltd. This is an unofficial fan work." (b) Keep this license with any redistribution. (c) Do not state or imply any partnership, endorsement or official relationship without written permission. (d) The logo may only be used to truthfully identify the source; never as your own mark, and never registered as a trademark.
+
+4. Prohibited without prior written consent. (a) Any commercial use, including sales, paid distribution, advertising, merchandise, sticker/emoji packs (including uploading to emoji platforms), digital collectibles, paid content, monetization via sponsorship or tips, and training/fine-tuning models to replicate the characters for commercial purposes. (b) Malicious adaptation: disparaging, defaming or insulting the characters or the Licensor, or harming their reputation, including pornographic, vulgar, nude or sexually suggestive content (Alice must always be fully and appropriately dressed); violent, gory, horror, gambling or drug content; hateful, discriminatory, politically sensitive or unlawful content; speaking in the characters' name to spread false information, or using them for fraud, false advertising or attacks. (c) Impersonating the Licensor or its official accounts; registering trademarks, domains, accounts or shop names containing "Alice", "白艾莉", "洛小山" or "米羊" to mislead the public; applying for any trademark, copyright registration or other right over the character assets. (d) Transferring, renting or sublicensing the character assets, or claiming any right in them. (e) Infringing any third party's rights.
+
+5. Ownership. All rights in the character assets (copyright, trademark, etc.) belong to the Licensor. Original parts you create yourself in a fan work belong to you, but the character likeness, names and anything derived from the character assets remain the Licensor's.
+
+6. Breach and liability. Any breach automatically terminates your license; you must stop using the assets and remove the related works. For malicious adaptation, impersonation and commercial use, the Licensor reserves the right to pursue legal liability, including injunction, remedial measures, public apology, compensation for all losses (including reasonable enforcement costs such as notarization and attorney fees), platform takedown complaints, and litigation or arbitration. If the Licensor suffers third-party claims, proceedings, penalties or platform actions because of your fan works or breach, you bear all resulting liability and costs. This section survives termination.
+
+7. Disclaimer. The repository is provided "as is" without warranty of any kind; to the maximum extent permitted by law the Licensor is not liable for any loss arising from your use.
+
+8. Misc. The Licensor may publish new versions; a new version applies to content obtained after its release, and the Licensor may terminate your license for malicious use by written notice at any time. This license is governed by the laws of the People's Republic of China; disputes shall first be negotiated and, failing that, submitted to the competent people's court at the Licensor's domicile. If any provision is held invalid, the rest remains effective.
