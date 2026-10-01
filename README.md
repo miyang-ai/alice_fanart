@@ -30,7 +30,7 @@ refs/
   logo/           米羊科技 Logo
 outputs/          成图案例，按「日期_事项」分目录，每张图带同名 .prompt.json
 docs/垫图逻辑.md   垫图规范：参考图职责、身份锁、画风与提示词写法、存档与审计
-workflows/        新建虚构角色的工作流
+workflows/        新建虚构角色、数码涟漪修复等工作流
 scripts/          可选的生图网关脚本
 ```
 
