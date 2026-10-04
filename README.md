@@ -9,8 +9,8 @@ Alice（白艾莉）、她的朋友们与洛小山的二创素材库：人物资
 ## 认识 Alice
 
 - 人物资料：[`refs/alice/persona.json`](refs/alice/persona.json)（2000 年 4 月 8 日出生、26 岁、ISFJ；现居上海徐汇衡复太原路）
-- 三视图：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)
-- 三视图提供脸型、正侧背结构、身体比例与表情；场景图提供气质与构图。
+- 三视图与表情：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)（基础内衣正面、侧面、背面 + 10 个表情）
+- 三视图提供脸型、身体结构、比例与表情；场景图提供气质与构图。
 
 ## 她的朋友们
 
