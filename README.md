@@ -1,16 +1,16 @@
 # alice_fanart
 
-Alice（白艾莉）与洛小山的二创素材库：官方参考图、垫图规范、提示词和成图案例。
+Alice（白艾莉）、她的朋友们与洛小山的二创素材库：人物资料、三视图、垫图规范、提示词和成图案例。
 
 <p align="center">
   <img src="outputs/2026-10-01_readme_cover_Alice二创封面/alice_luoxiaoshan_readme_cover_v1.png" alt="Alice Fanart · 白艾莉 · 洛小山 二创素材库" />
 </p>
 
-## Alice 正典资料
+## 认识 Alice
 
-- 完整人设：[`refs/alice/persona.json`](refs/alice/persona.json)（2000 年 4 月 8 日出生、26 岁、ISFJ；现居上海徐汇衡复太原路）
-- 官方三视图：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)
-- 官方三视图用于锁定身份、正侧背结构、身体比例与表情；场景图负责补充气质与构图，不替代三视图。
+- 人物资料：[`refs/alice/persona.json`](refs/alice/persona.json)（2000 年 4 月 8 日出生、26 岁、ISFJ；现居上海徐汇衡复太原路）
+- 三视图：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)
+- 三视图提供脸型、正侧背结构、身体比例与表情；场景图提供气质与构图。
 
 ## 她的朋友们
 
