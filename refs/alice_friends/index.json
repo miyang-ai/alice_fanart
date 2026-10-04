@@ -6,6 +6,8 @@
     "englishName": "Ken Chen",
     "title": "调研员",
     "age": 29,
+    "birthday": "1997-02-19",
+    "mbti": "INTP",
     "city": "深圳南山",
     "hometown": "广东汕头",
     "gaze": "right"
@@ -17,6 +19,8 @@
     "englishName": "Sherry Lin",
     "title": "翻译官",
     "age": 27,
+    "birthday": "1999-06-21",
+    "mbti": "INFP",
     "city": "杭州西湖区",
     "hometown": "浙江宁波",
     "gaze": "left"
@@ -28,6 +32,8 @@
     "englishName": "Yinan",
     "title": "作家",
     "age": 31,
+    "birthday": "1994-11-07",
+    "mbti": "ISTJ",
     "city": "成都青羊区",
     "hometown": "四川乐山",
     "gaze": "left"
@@ -39,6 +45,8 @@
     "englishName": "Mo",
     "title": "配音",
     "age": 25,
+    "birthday": "2001-01-17",
+    "mbti": "ESTP",
     "city": "北京朝阳",
     "hometown": "吉林长春",
     "gaze": "front"
@@ -50,6 +58,8 @@
     "englishName": "Nina Zhou",
     "title": "设计师",
     "age": 28,
+    "birthday": "1998-09-12",
+    "mbti": "INTJ",
     "city": "上海徐汇",
     "hometown": "江苏苏州",
     "gaze": "right"
@@ -61,6 +71,8 @@
     "englishName": "Chu",
     "title": "画师",
     "age": 24,
+    "birthday": "2002-03-27",
+    "mbti": "ISFP",
     "city": "广州海珠区",
     "hometown": "江西景德镇",
     "gaze": "left"
@@ -72,6 +84,8 @@
     "englishName": "Bo Wei",
     "title": "分析师",
     "age": 30,
+    "birthday": "1996-07-09",
+    "mbti": "ISTJ",
     "city": "长沙岳麓",
     "hometown": "湖南株洲",
     "gaze": "front"
@@ -83,6 +97,8 @@
     "englishName": "Faye Xing",
     "title": "量化分析师",
     "age": 27,
+    "birthday": "1999-08-15",
+    "mbti": "ENTJ",
     "city": "上海浦东",
     "hometown": "山东青岛",
     "gaze": "front"
@@ -94,6 +110,8 @@
     "englishName": "Yao Shen",
     "title": "小说家",
     "age": 33,
+    "birthday": "1993-04-23",
+    "mbti": "INFJ",
     "city": "厦门思明区",
     "hometown": "福建漳州",
     "gaze": "left"
@@ -105,6 +123,8 @@
     "englishName": "Yu Zhang",
     "title": "开发",
     "age": 28,
+    "birthday": "1998-05-24",
+    "mbti": "ISTP",
     "city": "珠海香洲",
     "hometown": "广西柳州",
     "gaze": "front"
@@ -116,6 +136,8 @@
     "englishName": "Lu Xi",
     "title": "文档工程师",
     "age": 30,
+    "birthday": "1995-12-03",
+    "mbti": "ISTJ",
     "city": "深圳南山",
     "hometown": "江苏无锡",
     "gaze": "right"
@@ -127,6 +149,8 @@
     "englishName": "Xin Gu",
     "title": "内容评论家",
     "age": 32,
+    "birthday": "1994-02-11",
+    "mbti": "INTJ",
     "city": "北京朝阳",
     "hometown": "河北保定",
     "gaze": "right"
@@ -138,6 +162,8 @@
     "englishName": "Qing Xie",
     "title": "论文阅读伴侣",
     "age": 28,
+    "birthday": "1997-10-18",
+    "mbti": "INFJ",
     "city": "北京海淀",
     "hometown": "湖北武汉",
     "gaze": "right"

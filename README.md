@@ -6,9 +6,15 @@ Alice（白艾莉）与洛小山的二创素材库：官方参考图、垫图规
   <img src="outputs/2026-10-01_readme_cover_Alice二创封面/alice_luoxiaoshan_readme_cover_v1.png" alt="Alice Fanart · 白艾莉 · 洛小山 二创素材库" />
 </p>
 
+## Alice 正典资料
+
+- 完整人设：[`refs/alice/persona.json`](refs/alice/persona.json)（2000 年 4 月 8 日出生、26 岁、ISFJ；现居上海徐汇衡复太原路）
+- 官方三视图：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)
+- 三视图采用较早一代视觉，但身份与正侧背结构遵循更稳定，因此继续作为身份参考；场景图负责补充气质与构图，不替代三视图。
+
 ## 她的朋友们
 
-Alice 有十三位虚构朋友，参考图都在 [`refs/alice_friends/`](refs/alice_friends/)，可以和她同框创作。
+Alice 有十三位虚构朋友，完整小传、生日、MBTI 与参考图都在 [`refs/alice_friends/`](refs/alice_friends/)，可以和她同框创作。
 
 <p align="center">
   <img src="docs/images/alice_friends_roster.jpg" width="70%" alt="Alice 的十三位朋友" />
@@ -24,7 +30,7 @@ Alice 有十三位虚构朋友，参考图都在 [`refs/alice_friends/`](refs/al
 
 ```
 refs/
-  alice/          Alice 参考图：设定表、三视图、16 套衣柜、场景立绘、Q 版与迷你少女设定
+  alice/          Alice 完整人设、设定表、三视图、16 套衣柜、场景立绘、Q 版与迷你少女设定
   luoxiaoshan/    洛小山形象、成品案例、道具与画风锚点、原始提示词存档
   alice_friends/  Alice 的十三位虚构朋友
   logo/           米羊科技 Logo
