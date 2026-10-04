@@ -10,7 +10,7 @@ Alice（白艾莉）与洛小山的二创素材库：官方参考图、垫图规
 
 - 完整人设：[`refs/alice/persona.json`](refs/alice/persona.json)（2000 年 4 月 8 日出生、26 岁、ISFJ；现居上海徐汇衡复太原路）
 - 官方三视图：[`refs/alice/ref_sheets/ref_sheet_alice.jpg`](refs/alice/ref_sheets/ref_sheet_alice.jpg)
-- 三视图采用较早一代视觉，但身份与正侧背结构遵循更稳定，因此继续作为身份参考；场景图负责补充气质与构图，不替代三视图。
+- 官方三视图用于锁定身份、正侧背结构、身体比例与表情；场景图负责补充气质与构图，不替代三视图。
 
 ## 她的朋友们
 
