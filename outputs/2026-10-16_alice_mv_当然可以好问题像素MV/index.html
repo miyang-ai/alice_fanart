@@ -1700,7 +1700,7 @@ scene('finale', 41.42, 99, el => {
 /* 杂志式信息框、字幕、调试信息 */
 const hud = h(canvas, 'hud', '', '<div class="k k3"></div><div class="k k4"></div><div class="bl">ALICE.FANS · TC 00:00.00</div><div class="br"><i></i><i></i><i></i><i></i><span>&nbsp;150 BPM</span></div>');
 /* 游戏 HUD：关卡名、好感度、分数、成就提示。全部由时间算出，暂停、拖动、截帧都是同一画面 */
-const STAGES = { intro: ['01', '走进日常'], answer: ['01', '当然可以'], reply: ['01', '当然可以'], grid: ['02', '长时记忆'], here: ['03', '我就在这'], strike: ['03', '不躲不藏'], catch: ['03', '接住你'], day: ['BONUS', '真实时间线'], verse: ['04', '情绪共鸣'], understand: ['05', '默契沉淀'], really: ['05', '她的朋友圈'], handover: ['05', '角色共建 OPC'], thanks: ['05', '谢谢你'], chorus: ['06', '共创画廊'], still: ['07', '我就在'], lineup: ['07', '朋友们的日常'], bigchat: ['08', '共同经历'], dance: ['BONUS', '共创衣橱'], quad: ['09', '活体内容社区'], finale: ['FINAL', '稳稳接住你'] };
+const STAGES = { intro: ['01', '走进日常'], answer: ['01', '当然可以'], reply: ['01', '当然可以'], grid: ['02', '长时记忆'], here: ['03', '我就在这'], strike: ['03', '不躲不藏'], catch: ['03', '接住你'], day: ['BONUS', '真实时间线'], verse: ['04', '情绪共鸣'], understand: ['05', '默契沉淀'], really: ['05', '她的朋友圈'], handover: ['05', '角色共建 OPC'], thanks: ['05', '谢谢你'], chorus: ['06', '共创画廊'], still: ['07', '我就在'], lineup: ['07', '朋友们的日常'], bigchat: ['08', '共同经历'], dance: ['BONUS', '共创衣橱'], quad: ['09', '核心能力'], finale: ['FINAL', '稳稳接住你'] };
 const EV = [
   ...LYRICS[0].w.map(([a]) => [a, 25]),
   [4.42, 50], [4.56, 50], [4.70, 50], [6.06, 200],
