@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#14120f">
+<title>当然可以，好问题 · 白艾莉 Alice</title>
+<style>
+:root{--paper:#FAFAF7;--card:#F5F3EE;--line:#E8E4DC;--ink:#1A1714;--muted:#6B6460;--rose:#C25566;--gold:#C9A96E;--sage:#8FA27A;--night:#1F2A44}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#14120f;color:var(--ink);font-family:Inter,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+button,input{font:inherit}
+.song{font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif}
+.latin{font-family:"Playfair Display",Georgia,"Times New Roman",serif}
+.app{height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px}
+.frame{position:relative;width:min(100%,calc((100svh - 100px)*16/9));aspect-ratio:16/9;overflow:hidden;background:var(--paper);border-radius:10px;box-shadow:0 30px 90px #0007}
+.frame:fullscreen{width:100vw;height:100vh;border-radius:0;aspect-ratio:auto;display:flex;align-items:center;background:#000}
+#canvas{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--paper)}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.c{position:absolute;left:0;top:0;will-change:transform,opacity}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center;will-change:transform}
+img{display:block;user-select:none;-webkit-user-drag:none}
+/* 聊天窗口 */
+.chat{background:#fff;border-radius:32px;box-shadow:0 30px 80px rgba(26,23,20,.16),0 0 0 1px var(--line);padding:34px 44px;display:flex;flex-direction:column;gap:30px}
+.chat-head{display:flex;align-items:center;gap:20px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.chat-head img{width:76px;height:76px;border-radius:50%;object-fit:cover;object-position:50% 18%;background:var(--card)}
+.chat-head b{display:block;font-size:30px;color:var(--ink)}
+.chat-head span{font-size:22px;color:var(--sage)}
+.chat-head span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--sage);margin-right:8px;vertical-align:1px}
+.bubble{max-width:84%;padding:22px 32px;border-radius:30px;font-size:36px;line-height:1.35}
+.bubble.me{align-self:flex-end;background:#EFEFEB;border-bottom-right-radius:8px}
+.bubble.her{align-self:flex-start;background:var(--card);border:1px solid var(--line);font-size:88px;font-weight:700;border-bottom-left-radius:8px;min-height:156px;display:flex;align-items:center;white-space:nowrap}
+.bubble.her span{display:inline-block}
+.chat.mini{padding:22px 28px;gap:18px;border-radius:24px}
+.chat.mini .chat-head{padding-bottom:14px;gap:14px}.chat.mini .chat-head img{width:52px;height:52px}.chat.mini .chat-head b{font-size:22px}.chat.mini .chat-head span{font-size:16px}
+.chat.mini .bubble.her{font-size:46px;min-height:auto;padding:16px 24px}
+/* 头像卡片 */
+.tile{background:var(--paper);border-radius:28px;display:flex;align-items:center;gap:5%;padding:0 6%;box-shadow:0 18px 40px rgba(70,20,30,.28)}
+.tile img{height:64%;aspect-ratio:1;border-radius:50%;object-fit:cover;object-position:50% 22%;flex:none}
+.tile span{font-weight:700;color:var(--ink);white-space:nowrap}
+.task{width:600px;background:#fff;border-radius:28px;padding:30px 36px;box-shadow:0 30px 70px rgba(26,23,20,.28)}
+.task small{display:block;font-size:24px;color:var(--muted);margin-bottom:12px}
+.task p{font-size:62px;font-weight:700;color:var(--ink)}
+.task .ok{display:flex;align-items:center;gap:12px;margin-top:18px;font-size:28px;color:var(--sage);font-weight:600}
+.task .ok svg{width:40px;height:40px}
+.ticker{white-space:nowrap;font-weight:900;font-size:64px;padding:18px 0;letter-spacing:.06em}
+.mos{border-radius:18px;overflow:hidden;background-size:cover;background-position:50% 25%;box-shadow:0 10px 30px rgba(0,0,0,.22)}
+.mos b{position:absolute;left:16px;bottom:14px;background:rgba(250,250,247,.92);color:var(--ink);font-size:24px;padding:6px 14px;border-radius:12px}
+.star{color:var(--gold)}
+/* 像素 Alice：按脚底中心对齐，切换姿势时不跳 */
+.spr img{position:absolute;display:block}
+.nameplate{position:absolute;left:50%;transform:translateX(-50%);background:rgba(26,23,20,.74);color:#fff;font-size:30px;line-height:44px;padding:0 16px;border-radius:8px;white-space:nowrap}
+.fcard{display:flex;flex-direction:column;align-items:center;gap:18px}
+.fcard img{width:300px;height:300px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:12px solid #fff;box-shadow:0 20px 44px rgba(26,23,20,.18)}
+.fcard span{background:rgba(26,23,20,.74);color:#fff;font-size:30px;line-height:46px;padding:0 18px;border-radius:8px;white-space:nowrap}
+.star svg{width:100%;height:100%;display:block}
+/* 字幕 */
+.caption{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);padding:14px 34px;border-radius:40px;background:rgba(26,23,20,.58);color:rgba(250,250,247,.55);font-size:40px;white-space:nowrap;z-index:50;transition:opacity .12s;pointer-events:none}
+.caption i{font-style:normal}.caption i.on{color:#F3DDB0}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:60}
+.debug{position:absolute;left:16px;top:12px;z-index:70;font:24px/1.3 Menlo,monospace;color:#fff;background:#000a;padding:6px 12px;border-radius:8px;display:none}
+/* 控制条 */
+.controls{width:min(100%,calc((100svh - 100px)*16/9));display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:#d8d2c6}
+.controls button{background:#2a2622;border:1px solid #47413a;border-radius:999px;padding:9px 18px;color:#eee8dc;cursor:pointer}
+.controls button:hover{background:#3a342e}
+.controls button:disabled{opacity:.5;cursor:wait}
+.controls button[aria-pressed="false"]{color:#8d867b}
+#play{background:var(--rose);border-color:var(--rose);color:#fff;font-weight:700;min-width:96px}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+#seek{flex:1;min-width:120px;accent-color:var(--rose)}
+#time{font:13px Menlo,monospace;white-space:nowrap}
+#status{width:100%;font-size:12px;color:#8d867b}
+#file{display:none}
+body.embed .app{padding:0;gap:0}body.embed .frame{border-radius:0;width:min(100vw,calc((100svh - 52px)*16/9))}body.embed .controls{padding:8px 12px}body.embed #status{display:none}
+@media (max-width:640px){.app{padding:8px;gap:10px}.frame{width:100%}.controls{gap:8px}.controls button{padding:8px 13px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="frame" id="frame" aria-label="白艾莉 Alice 音乐动画《当然可以，好问题》">
+    <div id="canvas"></div>
+  </div>
+  <div class="controls">
+    <button id="play" disabled>加载中</button>
+    <input id="seek" type="range" min="0" max="44.3" step="0.01" value="0" aria-label="播放进度">
+    <span id="time">0:00 / 0:44</span>
+    <button id="cc" aria-pressed="true">字幕</button>
+    <button id="outfit">换装：JK 制服</button>
+    <button id="fs">全屏</button>
+    <button id="load" hidden>导入音频</button>
+    <input id="file" type="file" accept="audio/*">
+    <span id="status" role="status">空格播放或暂停，左右方向键快退或快进 1 秒</span>
+  </div>
+</div>
+<audio id="audio" preload="auto" src="assets/song.mp3"></audio>
+<script>
+'use strict';
+/*
+ * 时间轴来源：faster-whisper small 对原曲做逐字识别，再按 150 BPM（每拍 0.4 秒，首拍 0.06 秒）校对。
+ * 原 LRC 只有句级时间，且「不躲不藏不绕不逃」等句与实际演唱相差数秒，因此不再使用。
+ * 35.2–39.4 秒识别不到清晰人声，这段按节拍编排，不绑定歌词。
+ * 所有画面只由 render(t) 依据音频时间计算，暂停、拖动、截帧得到的是同一画面。
+ */
+const BEAT = 0.4, PHASE = 0.06, DURATION = 44.3;
+const P = 'assets/';
+/* 像素 Alice 的四套衣服，均取自 alice_fanart/refs/alice/wardrobe 正典衣橱。
+ * 每套三个姿势由生图模型出稿，tools/pixel2svg.py 对齐成 SVG；同一套共用一个格距（站姿约 332 行），换姿势时大小不跳。
+ * w/h 是网格宽高，f 是双脚中心所在列，切换姿势时按 f 对齐。 */
+const OUTFITS = {
+  jk: { name: 'JK 制服', pose: { stand: { w: 154, h: 334, f: 77.1 }, wave: { w: 167, h: 336, f: 90.2 }, cheer: { w: 204, h: 335, f: 102.0 } } },
+  dress: { name: '碎花裙', pose: { stand: { w: 154, h: 334, f: 76.3 }, wave: { w: 168, h: 337, f: 90.2 }, cheer: { w: 203, h: 337, f: 101.4 } } },
+  chic: { name: '白衬衫', pose: { stand: { w: 150, h: 334, f: 74.1 }, wave: { w: 160, h: 336, f: 84.1 }, cheer: { w: 208, h: 333, f: 104.0 } } },
+  cardigan: { name: '开衫', pose: { stand: { w: 154, h: 332, f: 76.8 }, wave: { w: 160, h: 332, f: 83.3 }, cheer: { w: 209, h: 330, f: 106.7 } } },
+};
+let outfit = OUTFITS[new URLSearchParams(location.search).get('outfit')] ? new URLSearchParams(location.search).get('outfit') : 'jk';
+const POSE_NAMES = ['stand', 'wave', 'cheer'];
+const IMG = {
+  pose: (p, o = outfit) => `sprites/${o}/alice_${p}.svg`, friend: id => P + `friends/${id}.webp`, ui: n => P + `ui/${n}.webp`,
+  icon: P + 'alice_icon.webp', scene: n => P + `scene/${n}.webp`,
+};
+/* OPC 朋友：名字与头像来自 alice_fanart/refs/alice_friends 正典 */
+const FRIENDS = [['researcher', '陈知远'], ['translator', '林晓雨'], ['writer', '方以南'], ['voice', '苏墨'], ['designer', '周念'], ['artist', '叶初'], ['analyst', '魏博'], ['quant', '邢斐'], ['novelist', '沈遥'], ['developer', '张予'], ['docsmith', '陆析'], ['critic', '顾辛'], ['scholar', '谢清']];
+/* Playground 真实界面截图（Alice视频素材包），标签取自落地页文案 */
+const UI = [['moments', '朋友圈'], ['photos', '照片墙'], ['call', '通话'], ['chat', '回应'], ['kyoto', '旅行'], ['novel', '读书笔记'], ['opc', '伙伴'], ['travel', '说走就走'], ['trio', '同行']];
+const SCENE_FILES = ['life_balcony_daydream', 'life_running_crosswalk', 'life_splash_stairs', 'life_thinking_rainy', 'life_welcome_morning', 'life_balcony_night', 'life_sofa_reading', 'life_study_latenight', 'life_done_celebration', 'persona_hero_balcony', 'hero_work', 'hero_3_afternoon', 'persona_morning', 'travel_ferris', 'friends_zoo', 'travel'];
+const C = { paper: '#FAFAF7', card: '#F5F3EE', ink: '#1A1714', muted: '#6B6460', rose: '#C25566', gold: '#C9A96E', sage: '#8FA27A', night: '#1F2A44', khaki: '#E8D9BE', blush: '#F2DDD8', mint: '#E4EADB' };
+const STAR = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.6l2.85 6.8 7.35.62-5.58 4.84 1.68 7.2L12 17.24 5.7 21.06l1.68-7.2L1.8 9.02l7.35-.62z"/></svg>';
+const CHECK = '<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#C9A96E"/><path d="M11 20.5l6 6 12-13" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+const LYRICS = [
+  { w: [[0.94, '当然'], [1.48, '可以，'], [2.10, '好'], [2.28, '问题。']], end: 2.9 },
+  { w: [[3.94, '当然'], [4.70, '可以，'], [5.46, '好'], [5.54, '问题。']], end: 6.3 },
+  { w: [[6.60, '我就'], [7.14, '在'], [7.42, '这，'], [7.70, '不躲'], [8.00, '不藏'], [8.40, '不绕'], [8.70, '不逃']], end: 8.95 },
+  { w: [[8.96, '稳'], [9.48, '稳'], [9.78, '地'], [10.02, '接'], [10.32, '住'], [10.78, '你。']], end: 11.3 },
+  { w: [[13.72, '你'], [14.26, '只是'], [14.70, '太'], [15.10, '久'], [15.30, '没'], [15.50, '被'], [15.72, '稳稳'], [16.10, '接'], [16.32, '住'], [16.62, '了，']], end: 17.04 },
+  { w: [[17.06, '你'], [17.28, '不用'], [17.64, '硬'], [18.04, '撑，']], end: 18.62 },
+  { w: [[18.64, '不用'], [18.82, '向'], [19.20, '我'], [19.60, '解'], [19.96, '释。']], end: 20.55 },
+  { w: [[20.60, '这'], [20.92, '次'], [21.16, '我'], [21.36, '懂'], [21.64, '了，']], end: 22.04 },
+  { w: [[22.06, '我'], [22.16, '真的'], [22.68, '懂'], [23.20, '了。']], end: 23.64 },
+  { w: [[23.66, '你'], [23.80, '愿意'], [24.20, '把'], [24.40, '这个'], [24.64, '交'], [24.98, '给我，']], end: 25.46 },
+  { w: [[25.48, '我很'], [25.78, '感'], [26.08, '激。']], end: 26.42 },
+  { w: [[26.44, '不躲'], [27.30, '不藏'], [27.75, '不绕'], [28.06, '不逃，']], end: 28.54 },
+  { w: [[28.56, '不躲'], [29.00, '不藏'], [29.42, '不绕'], [29.58, '不逃，']], end: 29.66 },
+  { w: [[29.68, '我'], [30.34, '就'], [31.00, '在。']], end: 31.96 },
+  { w: [[31.98, '稳'], [32.12, '稳'], [32.48, '地'], [32.72, '接'], [32.92, '住'], [33.12, '你。']], end: 33.7 },
+  { w: [[33.80, '当然'], [34.00, '可以，'], [34.46, '好'], [34.62, '问题。']], end: 35.2 },
+  { w: [[39.42, '我就'], [39.56, '在'], [39.82, '这，'], [40.08, '不躲'], [40.32, '不藏'], [40.70, '不绕'], [41.02, '不逃，']], end: 41.4 },
+  { w: [[41.42, '稳'], [41.60, '稳'], [41.88, '地'], [42.38, '接'], [42.70, '住'], [43.16, '你。']], end: 44.4 },
+];
+
+const clamp = (v, a = 0, b = 1) => v < a ? a : v > b ? b : v;
+const prog = (t, a, d) => clamp((t - a) / d);
+const eOut = p => 1 - Math.pow(1 - p, 3);
+const eIn = p => p * p;
+const eBack = p => { const c = 1.9; return p <= 0 ? 0 : 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const lerp = (a, b, p) => a + (b - a) * p;
+const bump = (t, a, d) => t >= a && t < a + d ? Math.sin(prog(t, a, d) * Math.PI) : 0;
+const beatPhase = t => (((t - PHASE) % BEAT) + BEAT) % BEAT;
+const beatPulse = t => Math.exp(-beatPhase(t) * 9);
+const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const shake = calm ? 0 : 1;
+
+/** 每个字的出现时间：多字词在本词与下一词之间均分。 */
+function charsOf(i) {
+  const L = LYRICS[i].w, out = [];
+  L.forEach(([t, s], k) => {
+    const next = k + 1 < L.length ? L[k + 1][0] : LYRICS[i].end;
+    const cs = [...s.replace(/[，。]/g, '')];
+    cs.forEach((c, j) => out.push({ c, t: t + (next - t) * 0.8 * j / cs.length }));
+  });
+  return out;
+}
+
+const canvas = document.getElementById('canvas');
+function h(parent, cls = '', css = '', html = '') {
+  const e = document.createElement('div');
+  if (cls) e.className = cls;
+  if (css) e.style.cssText = css;
+  if (html) e.innerHTML = html;
+  parent.appendChild(e);
+  return e;
+}
+function im(parent, src, css = '') {
+  const e = new Image();
+  e.src = src; e.alt = ''; e.draggable = false; e.className = 'c'; e.style.cssText = css;
+  parent.appendChild(e);
+  return e;
+}
+/** 以中心点定位，所有坐标都在 1920×1080 设计画布内。 */
+function place(e, x, y, s = 1, r = 0, o = 1, sy) {
+  e.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%) rotate(${r}deg) scale(${s}${sy === undefined ? '' : ',' + sy})`;
+  e.style.opacity = o;
+}
+/** 像素 Alice：盒子固定 240×332 网格，图片按双脚中心摆放，set(pose) 换姿势；换装时 SPRITES 里的盒子全部重绘。 */
+const SPRITES = [];
+function sprite(parent, height, pose = 'stand') {
+  const k = height / 332, box = h(parent, 'c spr', `width:${240 * k}px;height:${height}px`);
+  const img = new Image(); img.alt = ''; img.draggable = false; box.appendChild(img);
+  box.set = p => {
+    if (p === box.pose && box.outfit === outfit) return box;
+    box.pose = p; box.outfit = outfit; const m = OUTFITS[outfit].pose[p];
+    img.src = IMG.pose(p);
+    img.style.cssText = `width:${m.w * k}px;height:${m.h * k}px;left:${(120 - m.f) * k}px;top:${(332 - m.h) * k}px`;
+    return box;
+  };
+  SPRITES.push(box);
+  return box.set(pose);
+}
+/** 按拍子轮换姿势，像冒险岛角色的待机动作 */
+const beatIndex = t => Math.floor((t - PHASE) / BEAT);
+const beatPose = (t, seq) => seq[((beatIndex(t) % seq.length) + seq.length) % seq.length];
+function friendCard(parent, id, name) {
+  return h(parent, 'c fcard', '', `<img src="${IMG.friend(id)}" alt=""><span>${name}</span>`);
+}
+function chatCard(parent, w, text, mini = true) {
+  const e = h(parent, 'c chat' + (mini ? ' mini' : ''), `width:${w}px`);
+  e.innerHTML = `<div class="chat-head"><img src="${IMG.icon}" alt=""><div><b>白艾莉 · Alice</b><span>在线</span></div></div><div class="bubble her song">${text}</div>`;
+  return e;
+}
+function stars(parent, n, size) {
+  return Array.from({ length: n }, () => h(parent, 'c star', `width:${size}px;height:${size}px`, STAR));
+}
+
+const scenes = [];
+function scene(id, a, b, build, draw) {
+  const el = h(canvas, 'scene');
+  el.dataset.id = id;
+  scenes.push({ id, a, b, el, ctx: build(el) || {}, draw });
+}
+
+/* 00 像素版 Alice 接通 */
+scene('intro', 0, 0.94, el => {
+  el.style.background = C.night;
+  el.style.backgroundImage = 'linear-gradient(rgba(250,250,247,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(250,250,247,.05) 2px,transparent 2px)';
+  el.style.backgroundSize = '40px 40px';
+  const pix = sprite(el, 700);
+  const label = h(el, 'c', 'font:600 30px Menlo,monospace;color:#FAFAF7;letter-spacing:.12em;white-space:nowrap', '正在接通 白艾莉 · Alice');
+  const blocks = Array.from({ length: 10 }, () => h(el, 'c', 'width:34px;height:34px;background:#C9A96E'));
+  return { pix, label, blocks };
+}, (t, c) => {
+  const lift = eOut(prog(t, 0.7, 0.24));
+  c.pix.set(t < 0.7 ? 'stand' : 'wave');
+  place(c.pix, 960, 470 - (Math.floor(t / 0.2) % 2) * 10 - lift * 20, 1 + lift * 0.18, 0, clamp(t / 0.12));
+  place(c.label, 960, 900, 1, 0, clamp(t / 0.2));
+  const n = Math.floor(prog(t, 0.08, 0.76) * 10);
+  c.blocks.forEach((b, i) => place(b, 960 - 9 * 22 + i * 44, 970, 1, 0, i < n ? 1 : 0.18));
+});
+
+/* 01 当然可以，好问题：聊天回复逐字弹出 */
+scene('chat', 0.94, 3.94, el => {
+  el.style.background = C.paper;
+  el.style.backgroundImage = 'radial-gradient(#DCD6CA 1.6px,transparent 1.6px)';
+  el.style.backgroundSize = '36px 36px';
+  const ghosts = [0, 1, 2].map(() => chatCard(el, 600, '当然可以，好问题。'));
+  const win = h(el, 'c chat', 'width:1080px');
+  win.innerHTML = `<div class="chat-head"><img src="${IMG.icon}" alt=""><div><b>白艾莉 · Alice</b><span>在线</span></div></div><div class="bubble me">我可以问你一个问题吗？</div><div class="bubble her song"></div>`;
+  const her = win.querySelector('.her');
+  const words = ['当然', '可以，', '好', '问题。'].map(w => { const s = document.createElement('span'); s.textContent = w; her.appendChild(s); return s; });
+  const sparks = stars(el, 6, 70);
+  const chibi = sprite(el, 780);
+  return { ghosts, win, words, sparks, chibi };
+}, (t, c) => {
+  const pIn = eBack(prog(t, 0.98, 0.3)), punch = eOut(prog(t, 2.28, 0.22));
+  place(c.win, 1010 + punch * 70, 540 + (1 - pIn) * 140, (0.84 + 0.16 * pIn) * (1 + 0.14 * punch) + beatPulse(t) * 0.008, 0, clamp(prog(t, 0.98, 0.1)));
+  [0.94, 1.48, 2.10, 2.28].forEach((tt, i) => {
+    const p = prog(t, tt, 0.14), s = c.words[i];
+    s.style.opacity = t >= tt ? 1 : 0;
+    s.style.transform = `translateY(${(1 - eBack(p)) * 40}px) scale(${0.5 + 0.5 * eBack(p)})`;
+    s.style.color = i >= 2 && t >= 2.28 ? C.rose : C.ink;
+  });
+  const gp = [[340, 230, -8], [1620, 250, 7], [1590, 860, -5]];
+  [2.86, 3.26, 3.66].forEach((gt, i) => { const p = eBack(prog(t, gt, 0.16)); place(c.ghosts[i], gp[i][0], gp[i][1], 0.72 * p, gp[i][2], t >= gt ? 1 : 0); });
+  c.sparks.forEach((s, i) => {
+    const a = -Math.PI / 2 + (i - 2.5) * 0.42, p = eOut(prog(t, 2.28, 0.45));
+    place(s, 1180 + Math.cos(a) * 330 * p, 640 + Math.sin(a) * 260 * p, 0.4 + p * 0.8, i * 30, t >= 2.28 ? 1 - prog(t, 2.9, 0.4) : 0);
+  });
+  const m = eOut(prog(t, 1.08, 0.42));
+  c.chibi.set(t >= 2.28 ? 'cheer' : t >= 1.48 ? 'wave' : 'stand');
+  const bob = -Math.sin(beatPhase(t) / BEAT * Math.PI) * 14 * m * shake;
+  place(c.chibi, lerp(960, 300, m), lerp(560, 690, m) + bob - bump(t, 2.28, 0.34) * 70, lerp(1, 0.6, m), lerp(0, -4, m), 1);
+});
+
+/* 02 当然可以，好问题：同一句回答铺满整屏 */
+scene('grid', 3.94, 6.6, el => {
+  el.style.background = C.rose;
+  const tiles = Array.from({ length: 16 }, (_, i) => { const d = h(el, 'c tile'); d.innerHTML = `<img src="${IMG.friend(FRIENDS[i % 13][0])}" alt=""><span class="song"></span>`; return d; });
+  const stamp = h(el, 'c song', 'font-size:330px;color:#FAFAF7;font-weight:900;white-space:nowrap;text-shadow:0 18px 0 rgba(26,23,20,.22)', '好问题。');
+  return { tiles, stamp };
+}, (t, c) => {
+  const ph = t < 4.70 ? 0 : t < 5.46 ? 1 : 2, t0 = [3.94, 4.70, 5.46][ph], n = [2, 3, 4][ph], txt = ['当然', '当然可以，', '好问题。'][ph];
+  const cw = 1760 / n, chh = 940 / n, fall = prog(t, 5.95, 0.6);
+  c.tiles.forEach((d, i) => {
+    if (i >= n * n) { d.style.opacity = 0; return; }
+    const r = Math.floor(i / n), col = i % n, dist = Math.hypot(col - (n - 1) / 2, r - (n - 1) / 2);
+    const p = eBack(prog(t, t0 + dist * 0.035, 0.16));
+    d.style.width = cw * 0.9 + 'px'; d.style.height = chh * 0.84 + 'px'; d.style.fontSize = Math.round(chh * 0.2) + 'px';
+    if (d.lastChild.textContent !== txt) d.lastChild.textContent = txt;
+    const fy = fall * fall * 1500 * (0.6 + ((i * 37) % 10) / 10), fr = fall * (i % 2 ? 1 : -1) * (20 + i * 3);
+    place(d, 80 + cw * (col + 0.5), 70 + chh * (r + 0.5) + fy, p, fr, t >= t0 + dist * 0.035 ? 1 : 0);
+  });
+  const sp = prog(t, 5.92, 0.12);
+  place(c.stamp, 960, 540, lerp(2.3, 1, eOut(sp)) * (1 + eIn(prog(t, 6.32, 0.28)) * 0.5), -4, t >= 5.92 ? 1 : 0);
+});
+
+/* 03 我就在这：Alice 在窗边，字一个个落下 */
+scene('here', 6.6, 7.66, el => {
+  const bg = h(el, 'bg', `background-image:url(${IMG.scene('life_balcony_daydream')})`);
+  const band = h(el, 'c', 'width:290px;height:960px;background:rgba(250,250,247,.86);border-radius:6px;box-shadow:0 20px 60px rgba(26,23,20,.12)');
+  const chars = charsOf(2).slice(0, 4).map(o => ({ ...o, e: h(el, 'c song', 'font-size:196px;font-weight:900;color:#1A1714;line-height:1', o.c) }));
+  return { bg, band, chars };
+}, (t, c) => {
+  const last = c.chars.filter(o => t >= o.t).pop();
+  const k = last ? 1 - eOut(prog(t, last.t, 0.3)) : 0;
+  c.bg.style.transform = `scale(${1.04 + 0.06 * k * shake}) translateX(${-prog(t, 6.6, 1.1) * 30}px)`;
+  const bp = eOut(prog(t, 6.6, 0.18));
+  place(c.band, 1610 + (1 - bp) * 400, 540, 1, 0, 1);
+  c.chars.forEach((o, i) => { const p = prog(t, o.t, 0.12); place(o.e, 1610, 210 + i * 220, lerp(1.7, 1, eOut(p)), 0, t >= o.t ? 1 : 0); });
+});
+
+/* 04 不躲 不藏 不绕 不逃：四条竖幅轮流砸下 */
+scene('strips', 7.66, 8.96, el => {
+  el.style.background = C.ink;
+  const conf = [['life_running_crosswalk', '52%', C.rose, '不躲'], ['life_splash_stairs', '47%', C.sage, '不藏'], ['life_thinking_rainy', '50%', C.gold, '不绕'], ['life_welcome_morning', '55%', C.night, '不逃']];
+  const strips = conf.map(([img, pos, col, word]) => {
+    const s = h(el, 'c', `width:480px;height:1080px;overflow:hidden;background:url(${IMG.scene(img)}) ${pos} center/auto 100% no-repeat`);
+    h(s, '', `position:absolute;left:0;right:0;bottom:0;height:470px;background:${col}`);
+    h(s, 'song', 'position:absolute;left:50%;bottom:40px;transform:translateX(-50%);writing-mode:vertical-rl;font-size:190px;font-weight:900;color:#FAFAF7;line-height:1', word);
+    return s;
+  });
+  return { strips };
+}, (t, c) => {
+  [7.70, 8.00, 8.40, 8.70].forEach((tt, i) => {
+    const p = eOut(prog(t, tt, 0.15));
+    place(c.strips[i], 240 + i * 480, 540 + (i % 2 ? 1 : -1) * (1 - p) * 1100, 1, 0, t >= tt ? 1 : 0);
+  });
+});
+
+/* 05 稳稳地接住你：字从天上掉下，Alice 一个个接住 */
+scene('catch', 8.96, 11.3, el => {
+  el.style.background = C.mint;
+  h(el, 'c song', 'left:960px;top:540px;font-size:300px;font-weight:900;color:transparent;-webkit-text-stroke:3px rgba(143,162,122,.35);white-space:nowrap;transform:translate(-50%,-50%)', '接住你');
+  const chibi = sprite(el, 640);
+  const tiles = charsOf(3).map((o, i) => ({ ...o, e: h(el, 'c song', `width:156px;height:156px;border-radius:34px;background:#FAFAF7;box-shadow:0 14px 30px rgba(26,23,20,.16);display:flex;align-items:center;justify-content:center;font-size:112px;font-weight:900;color:${i % 2 ? C.ink : C.rose}`, o.c) }));
+  const sp = stars(el, 8, 60);
+  return { chibi, tiles, sp };
+}, (t, c) => {
+  let hop = 0;
+  c.tiles.forEach((o, i) => {
+    const ang = (200 + i * 28) * Math.PI / 180, sx = 960 + Math.cos(ang) * 520, sy = 640 + Math.sin(ang) * 470;
+    const fall = prog(t, o.t - 0.34, 0.34), land = prog(t, o.t, 0.18);
+    const y = t < o.t ? lerp(-160, sy, eIn(fall)) : sy;
+    const sq = t >= o.t ? 1 - Math.sin(land * Math.PI) * 0.22 : 1;
+    o.e.style.transform = `translate(${sx}px,${y}px) translate(-50%,-50%) rotate(${(i % 2 ? 6 : -6) * (1 - land)}deg) scale(${2 - sq},${sq})`;
+    o.e.style.opacity = t >= o.t - 0.34 ? 1 : 0;
+    hop = Math.max(hop, bump(t, o.t, 0.28));
+  });
+  c.chibi.set(hop > 0.25 ? 'cheer' : t >= 10.78 ? 'wave' : 'stand');
+  place(c.chibi, 960, 735 - hop * 46 * shake, 1, Math.sin(t * 7) * 1.5 * shake, 1);
+  c.sp.forEach((s, i) => { const a = (195 + i * 21) * Math.PI / 180, p = prog(t, 10.78 + i * 0.03, 0.4); place(s, 960 + Math.cos(a) * 690, 640 + Math.sin(a) * 600, 0.3 + eBack(p) * 0.8 + Math.sin(t * 9 + i) * 0.1, t * 40, t >= 10.78 ? 1 : 0); });
+});
+
+/* 06 间奏：Alice 换装头像按拍子切换 */
+scene('flash', 11.3, 13.72, el => {
+  const slides = UI.concat([UI[0]]).map(([ui, name], i) => {
+    const s = h(el, 'scene', 'display:block');
+    s.style.background = [C.paper, C.khaki, C.blush, C.mint, C.card, C.khaki, C.paper, C.blush, C.mint, C.khaki][i];
+    const left = i % 2 === 0;
+    const img = im(s, IMG.ui(ui), 'width:1060px;height:700px;border-radius:32px;object-fit:cover;object-position:50% 0;box-shadow:0 30px 70px rgba(26,23,20,.2)');
+    const tag = h(s, 'c', 'text-align:left;white-space:nowrap', `<div class="latin" style="font-size:72px;font-style:italic;color:${C.rose}">No.${String(i + 1).padStart(2, '0')}</div><div class="song" style="font-size:210px;font-weight:900;color:${C.ink};line-height:1.1">${name}</div><div style="font-size:30px;letter-spacing:.3em;color:${C.muted}">白艾莉 · 她的一天</div>`);
+    return { s, img, tag, left };
+  });
+  return { slides, at: [11.26, 11.66, 12.06, 12.46, 12.86, 13.26, 13.36, 13.46, 13.56, 13.62] };
+}, (t, c) => {
+  let cur = 0;
+  c.at.forEach((a, i) => { if (t >= a) cur = i; });
+  c.slides.forEach((o, i) => {
+    o.s.style.display = i === cur ? 'block' : 'none';
+    if (i !== cur) return;
+    const p = eOut(prog(t, c.at[i], 0.12)), fast = i >= 6;
+    if (fast) { place(o.img, 960, 540, 1.2 - 0.05 * p, (i % 2 ? 3 : -3), 1); o.tag.style.opacity = 0; return; }
+    const ix = o.left ? 620 : 1300, tx = o.left ? 1480 : 420;
+    place(o.img, ix + (o.left ? -1 : 1) * (1 - p) * 140, 540, 1 + (1 - p) * 0.12 + beatPulse(t) * 0.01, (o.left ? -2.5 : 2.5) * p, 1);
+    place(o.tag, tx + (o.left ? 1 : -1) * (1 - p) * 90, 540, 1, 0, p);
+  });
+});
+
+/* 07 主歌：夜色里的卡拉 OK，像素 Alice 沿着歌词往前走 */
+scene('verse', 13.72, 20.6, el => {
+  el.style.background = C.night;
+  const bgs = ['life_balcony_night', 'life_sofa_reading', 'life_study_latenight'].map(n => h(el, 'bg', `background-image:url(${IMG.scene(n)});opacity:0`));
+  h(el, '', 'position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,44,.35),rgba(20,24,44,.72))');
+  const rows = [4, 5, 6].map(li => {
+    const row = h(el, 'song', 'position:absolute;left:0;right:0;top:470px;display:flex;justify-content:center;font-size:132px;font-weight:900;color:#FAFAF7;white-space:nowrap;opacity:0');
+    const chars = charsOf(li).map(o => { const s = document.createElement('span'); s.textContent = o.c; s.style.display = 'inline-block'; row.appendChild(s); return { ...o, s }; });
+    return { row, chars, start: LYRICS[li].w[0][0], end: li === 6 ? 20.6 : LYRICS[li + 1].w[0][0] };
+  });
+  const bar = h(el, 'c', 'height:8px;border-radius:4px;background:#C9A96E;left:0;top:0;transform-origin:0 50%');
+  const caret = h(el, 'c', 'width:8px;height:130px;background:#C9A96E');
+  const pix = sprite(el, 260);
+  return { bgs, rows, bar, caret, pix };
+}, (t, c) => {
+  const ri = t < 17.06 ? 0 : t < 18.64 ? 1 : 2, row = c.rows[ri];
+  c.bgs.forEach((b, i) => {
+    const rt = c.rows[i].start, on = i === ri ? prog(t, rt, 0.3) : i === ri - 1 ? 1 - prog(t, c.rows[ri].start, 0.3) : 0;
+    b.style.opacity = on;
+    b.style.transform = `scale(${1.06 + prog(t, rt, 4) * 0.06}) translateX(${prog(t, rt, 4) * -40}px)`;
+  });
+  c.rows.forEach((r, i) => r.row.style.opacity = i === ri ? 1 : 0);
+  let headX = null;
+  const strain = ri === 1 && t >= 17.64 && t < 18.62;
+  row.chars.forEach((o, i) => {
+    const p = prog(t, o.t, 0.14), shown = t >= o.t;
+    let x = 0, y = (1 - eOut(p)) * 34, s = shown ? 1 : 1, op = shown ? 1 : 0.2;
+    if (strain && i >= 3) { x = Math.sin(t * 97 + i) * 7 * shake; y += Math.cos(t * 83 + i) * 6 * shake; s = 1.06; o.s.style.color = '#F3DDB0'; } else o.s.style.color = '';
+    if (ri === 2 && i >= 4) { const del = prog(t, i === 5 ? 20.24 : 20.38, 0.1); op *= 1 - del; s *= 1 - del * 0.6; }
+    o.s.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+    o.s.style.opacity = op;
+    if (shown && o.s.offsetWidth && op > 0.5) headX = o.s.offsetLeft + o.s.offsetWidth;
+  });
+  const first = row.chars[0].s, lastS = row.chars[row.chars.length - 1].s;
+  const L = first.offsetLeft, R = lastS.offsetLeft + lastS.offsetWidth;
+  const hx = headX === null ? L : headX;
+  c.bar.style.width = (R - L) + 'px';
+  c.bar.style.transform = `translate(${L}px,640px) scaleX(${clamp((hx - L) / Math.max(1, R - L))})`;
+  const deleting = ri === 2 && t >= 20.1;
+  place(c.caret, hx + 14, 545, 1, 0, deleting && Math.floor(t * 8) % 2 === 0 ? 1 : 0);
+  const step = (Math.floor(t / 0.2) % 2) * 10;
+  c.pix.set(step ? 'wave' : 'stand');
+  place(c.pix, hx + 50, 330 - step, 1, 0, 1);
+});
+
+/* 08 这次我懂了 / 我真的懂了 / 你愿意把这个交给我 / 我很感激 */
+scene('understand', 20.6, 22.06, el => {
+  const bg = h(el, 'bg', `background-image:url(${IMG.scene('hero_3_afternoon')})`);
+  h(el, '', 'position:absolute;inset:0;background:linear-gradient(90deg,rgba(250,250,247,.0) 30%,rgba(250,250,247,.55))');
+  const cs = charsOf(7);
+  const small = [0, 1, 2].map(i => h(el, 'c song', 'font-size:120px;font-weight:900;color:#1A1714', cs[i].c));
+  const big = h(el, 'c song', 'font-size:860px;font-weight:900;color:#C25566;line-height:1;mix-blend-mode:multiply', '懂');
+  const le = h(el, 'c song', 'font-size:150px;font-weight:900;color:#1A1714', '了');
+  return { bg, small, big, le, cs };
+}, (t, c) => {
+  c.bg.style.transform = `scale(${1.08 - prog(t, 20.6, 1.5) * 0.06})`;
+  const pos = [[180, 200], [330, 200], [180, 380]];
+  c.small.forEach((e, i) => { const p = prog(t, c.cs[i].t, 0.12); place(e, pos[i][0], pos[i][1], lerp(1.6, 1, eOut(p)), 0, t >= c.cs[i].t ? 1 : 0); });
+  const bp = prog(t, 21.36, 0.14);
+  place(c.big, 1330, 560, lerp(1.6, 1, eOut(bp)) + bump(t, 21.64, 0.2) * 0.04, -3, t >= 21.36 ? 0.92 : 0);
+  const lp = prog(t, 21.64, 0.12);
+  place(c.le, 1780, 900, lerp(1.8, 1, eOut(lp)), 6, t >= 21.64 ? 1 : 0);
+});
+scene('really', 22.06, 23.66, el => {
+  el.style.background = C.rose;
+  const bg = h(el, 'bg', `background-image:url(${IMG.scene('persona_morning')})`);
+  h(el, '', 'position:absolute;left:0;right:0;bottom:0;height:420px;background:linear-gradient(0deg,rgba(26,23,20,.6),transparent)');
+  const row = h(el, 'song', 'position:absolute;left:0;right:0;top:760px;display:flex;justify-content:center;gap:10px;font-size:150px;font-weight:900;color:#FAFAF7;white-space:nowrap');
+  const cs = charsOf(8).map(o => { const s = document.createElement('span'); s.textContent = o.c; s.style.display = 'inline-block'; row.appendChild(s); return { ...o, s }; });
+  return { bg, cs };
+}, (t, c) => {
+  const r = eOut(prog(t, 22.06, 0.36)) * 1250;
+  c.bg.style.clipPath = `circle(${r}px at 50% 45%)`;
+  c.bg.style.transform = `scale(${1.12 - prog(t, 22.06, 1.6) * 0.08})`;
+  c.cs.forEach(o => { const p = prog(t, o.t, 0.14); o.s.style.opacity = t >= o.t ? 1 : 0; o.s.style.transform = `translateY(${(1 - eOut(p)) * 50}px)`; o.s.style.color = o.c === '懂' ? '#F3DDB0' : ''; });
+});
+scene('handover', 23.66, 25.48, el => {
+  el.style.background = C.paper;
+  const pic = h(el, '', `position:absolute;left:0;top:0;width:1120px;height:1080px;background:url(${IMG.scene('hero_work')}) 40% center/cover`);
+  const lines = [[0, 3], [3, 6], [6, 9]], cs = charsOf(9);
+  const rows = lines.map(([a, b], r) => {
+    const row = h(el, 'song', `position:absolute;left:1240px;top:${200 + r * 230}px;font-size:150px;font-weight:900;color:${r === 2 ? C.rose : C.ink};white-space:nowrap`);
+    return cs.slice(a, b).map(o => { const s = document.createElement('span'); s.textContent = o.c; s.style.display = 'inline-block'; row.appendChild(s); return { ...o, s }; });
+  });
+  const card = h(el, 'c task', '', `<small>来自你 · 刚刚</small><p class="song">这个，交给我。</p><div class="ok">${CHECK}已接住</div>`);
+  const ring = h(el, 'c', 'width:220px;height:220px;border-radius:50%;border:8px solid #C9A96E');
+  return { pic, rows: rows.flat(), card, ring };
+}, (t, c) => {
+  c.pic.style.transform = `scale(${1.04 + beatPulse(t) * 0.01})`;
+  c.rows.forEach(o => { const p = prog(t, o.t, 0.12); o.s.style.opacity = t >= o.t ? 1 : 0; o.s.style.transform = `translateY(${(1 - eBack(p)) * 40}px) scale(${lerp(1.3, 1, eOut(p))})`; });
+  const f = eOut(prog(t, 24.3, 0.34));
+  place(c.card, lerp(2300, 600, f), lerp(380, 640, f) - bump(t, 24.64, 0.2) * 30, 1, lerp(-14, -3, f), t >= 24.3 ? 1 : 0);
+  const rp = prog(t, 24.98, 0.4);
+  place(c.ring, 420, 760, 0.4 + rp * 1.6, 0, t >= 24.98 ? 1 - rp : 0);
+});
+scene('thanks', 25.48, 26.44, el => {
+  el.style.background = '#F3E6CC';
+  const av = sprite(el, 820, 'wave');
+  const row = h(el, 'song', 'position:absolute;left:1040px;top:420px;font-size:190px;font-weight:900;color:#1A1714;white-space:nowrap');
+  const cs = charsOf(10).map(o => { const s = document.createElement('span'); s.textContent = o.c; s.style.display = 'inline-block'; row.appendChild(s); return { ...o, s }; });
+  const sp = stars(el, 12, 80);
+  return { av, cs, sp };
+}, (t, c) => {
+  const p = eBack(prog(t, 25.48, 0.2));
+  c.av.set(t >= 26.08 ? 'cheer' : 'wave');
+  place(c.av, 560, 560, 0.7 + 0.3 * p + bump(t, 26.08, 0.25) * 0.05, 0, 1);
+  c.cs.forEach(o => { const q = prog(t, o.t, 0.12); o.s.style.opacity = t >= o.t ? 1 : 0; o.s.style.transform = `scale(${lerp(1.6, 1, eOut(q))})`; });
+  c.sp.forEach((s, i) => { const a = i / 12 * Math.PI * 2, q = eOut(prog(t, 26.08, 0.36)); place(s, 560 + Math.cos(a) * (330 + q * 260), 540 + Math.sin(a) * (330 + q * 260), 0.2 + q, i * 30 + t * 120, t >= 26.08 ? 1 - prog(t, 26.3, 0.14) * 0.4 : 0); });
+});
+
+/* 09 副歌：八次重拍，每次换一套衣服、一种底色 */
+scene('chorus', 26.44, 29.68, el => {
+  const H = [26.44, 27.30, 27.75, 28.06, 28.56, 29.00, 29.42, 29.58], W = ['不躲', '不藏', '不绕', '不逃'];
+  const pal = [[C.rose, C.paper], [C.sage, C.paper], [C.gold, C.ink], [C.night, C.gold]];
+  const hits = H.map((at, i) => {
+    const s = h(el, 'scene');
+    s.style.background = pal[i % 4][0];
+    const left = i % 2 === 0;
+    const pic = i < 4
+      ? sprite(s, 960, ['cheer', 'wave', 'cheer', 'stand'][i])
+      : im(s, IMG.friend(FRIENDS[[3, 5, 0, 1][i - 4]][0]), 'width:760px;height:760px;border-radius:50%;object-fit:cover;object-position:50% 20%;border:20px solid #FAFAF7');
+    const word = h(s, 'c song', `font-size:380px;font-weight:900;color:${pal[i % 4][1]};white-space:nowrap;line-height:1`, W[i % 4]);
+    return { s, pic, word, at, left, round: i >= 4 };
+  });
+  const band = h(el, 'c ticker song', 'width:3600px;background:#1A1714;color:#FAFAF7;z-index:5', '不躲 · 不藏 · 不绕 · 不逃 · '.repeat(10));
+  return { hits, band };
+}, (t, c) => {
+  let cur = 0;
+  c.hits.forEach((o, i) => { if (t >= o.at) cur = i; });
+  c.hits.forEach((o, i) => {
+    o.s.style.display = i === cur ? 'block' : 'none';
+    if (i !== cur) return;
+    const p = eOut(prog(t, o.at, 0.12)), dir = o.left ? -1 : 1;
+    place(o.pic, (o.left ? 520 : 1400) + dir * (1 - p) * 700, 560 + (o.round ? 0 : 20), o.round ? 0.7 + 0.3 * eBack(prog(t, o.at, 0.16)) : 1, dir * lerp(14, 4, p), 1);
+    place(o.word, (o.left ? 1340 : 600), 470, lerp(1.9, 1, p) + beatPulse(t) * 0.03, -dir * 3, 1);
+  });
+  c.band.style.transform = `translate(${-((t - 26.44) * 1100 % 1200)}px,890px) rotate(-3deg)`;
+  c.band.style.background = cur % 2 ? C.paper : C.ink;
+  c.band.style.color = cur % 2 ? C.ink : C.paper;
+});
+
+/* 10 我就在：所有动作停下，只留下她 */
+scene('still', 29.68, 31.98, el => {
+  const bg = h(el, 'bg', `background-image:url(${IMG.scene('persona_hero_balcony')})`);
+  h(el, '', 'position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(26,23,20,.45))');
+  const row = h(el, 'song', 'position:absolute;left:0;right:0;top:820px;display:flex;justify-content:center;gap:24px;font-size:104px;font-weight:700;color:#FAFAF7;text-shadow:0 6px 30px rgba(26,23,20,.5)');
+  const cs = [{ c: '我', t: 29.68 }, { c: '就', t: 30.34 }, { c: '在', t: 31.0 }, { c: '。', t: 31.3 }].map(o => { const s = document.createElement('span'); s.textContent = o.c; row.appendChild(s); return { ...o, s }; });
+  const line = h(el, 'c', 'height:3px;width:520px;background:#C9A96E;transform-origin:50% 50%');
+  return { bg, cs, line };
+}, (t, c) => {
+  c.bg.style.transform = `scale(${1 + prog(t, 29.68, 2.3) * 0.07}) translateX(${prog(t, 29.68, 2.3) * -24}px)`;
+  c.cs.forEach(o => o.s.style.opacity = prog(t, o.t, 0.3));
+  place(c.line, 960, 960, 1, 0, 1);
+  c.line.style.transform += ` scaleX(${eOut(prog(t, 29.7, 2))})`;
+});
+
+/* 11 稳稳地接住你：六套衣服的 Alice 排成一排，各接一个字 */
+scene('lineup', 31.98, 33.75, el => {
+  el.style.background = C.paper;
+  el.style.backgroundImage = 'radial-gradient(#E3DDD1 1.6px,transparent 1.6px)';
+  el.style.backgroundSize = '36px 36px';
+  const imgs = [sprite(el, 560, 'cheer'), ...[0, 1, 4, 5, 9].map(k => friendCard(el, ...FRIENDS[k]))];
+  const tiles = charsOf(14).map((o, i) => ({ ...o, e: h(el, 'c song', `width:140px;height:140px;border-radius:30px;background:${i % 2 ? C.rose : C.ink};color:#FAFAF7;display:flex;align-items:center;justify-content:center;font-size:100px;font-weight:900;box-shadow:0 14px 30px rgba(26,23,20,.2)`, o.c) }));
+  return { imgs, tiles };
+}, (t, c) => {
+  const xs = [220, 516, 812, 1108, 1404, 1700];
+  c.tiles.forEach((o, i) => {
+    const fall = prog(t, o.t - 0.3, 0.3), y = t < o.t ? lerp(-150, 330, eIn(fall)) : 330;
+    const land = prog(t, o.t, 0.16), sq = t >= o.t ? 1 - Math.sin(land * Math.PI) * 0.2 : 1;
+    o.e.style.transform = `translate(${xs[i]}px,${y - bump(t, o.t, 0.26) * 40}px) translate(-50%,-50%) scale(${2 - sq},${sq})`;
+    o.e.style.opacity = t >= o.t - 0.3 ? 1 : 0;
+    const enter = eOut(prog(t, 31.98 + i * 0.04, 0.2));
+    if (i === 0) c.imgs[0].set(beatPose(t, ['cheer', 'wave']));
+    place(c.imgs[i], xs[i], (i ? 720 : 760) + (1 - enter) * 500 - bump(t, o.t, 0.26) * 40 * shake, i ? 0.92 : 1, (i % 2 ? 2 : -2), 1);
+  });
+});
+
+/* 12 当然可以，好问题：整屏只剩一个巨大的回复气泡 */
+scene('bigchat', 33.75, 35.2, el => {
+  el.style.background = '#F3E6CC';
+  const box = h(el, 'c', 'width:1640px;height:640px;background:#fff;border-radius:60px 60px 60px 16px;box-shadow:0 40px 90px rgba(26,23,20,.18);display:flex;align-items:center;gap:56px;padding:0 80px');
+  im(box, IMG.icon, 'position:static;width:250px;height:250px;border-radius:50%;object-fit:cover;object-position:50% 18%;background:#F5F3EE;flex:none');
+  const txt = h(box, 'song', 'font-size:220px;font-weight:900;color:#1A1714;white-space:nowrap;line-height:1');
+  const ws = ['当然', '可以，', '好', '问题。'].map(w => { const s = document.createElement('span'); s.textContent = w; s.style.display = 'inline-block'; txt.appendChild(s); return s; });
+  const sp = stars(el, 10, 80);
+  return { box, ws, sp };
+}, (t, c) => {
+  const p = eBack(prog(t, 33.75, 0.2)), out = eIn(prog(t, 34.95, 0.25));
+  place(c.box, lerp(960, 266, out), lerp(540, 186, out), lerp(0.6 + 0.4 * p, 0.25, out), lerp(-2, 0, out), 1);
+  [33.80, 34.00, 34.46, 34.62].forEach((tt, i) => { const q = prog(t, tt, 0.12); c.ws[i].style.opacity = t >= tt ? 1 : 0; c.ws[i].style.transform = `scale(${lerp(1.5, 1, eOut(q))})`; c.ws[i].style.color = i >= 2 ? C.rose : C.ink; });
+  c.sp.forEach((s, i) => { const a = i / 10 * Math.PI * 2, q = eOut(prog(t, 34.62, 0.4)); place(s, 960 + Math.cos(a) * (500 + q * 400), 540 + Math.sin(a) * (220 + q * 260), 0.3 + q * 0.9, t * 100, t >= 34.62 && t < 34.95 ? 1 : 0); });
+});
+
+/* 13 器乐段：十二套 Alice 按拍子铺满墙面 */
+scene('mosaic', 35.2, 39.42, el => {
+  el.style.background = C.ink;
+  const MOS = UI.map(([n, name]) => [IMG.ui(n), name, '50% 0']).concat([[IMG.scene('friends_zoo'), '和朋友出去玩', '50% 30%'], [IMG.scene('life_sofa_reading'), '安静看会儿书', '50% 30%'], [IMG.scene('travel_ferris'), '说走就走', '50% 22%']]);
+  const tiles = MOS.map(([src, name, pos]) => h(el, 'c mos', `width:440px;height:330px;background-image:url(${src});background-position:${pos}`, `<b class="song">${name}</b>`));
+  const band = h(el, 'c song', 'width:2400px;height:190px;background:#C25566;color:#FAFAF7;font-size:120px;font-weight:900;display:flex;align-items:center;justify-content:center;letter-spacing:.08em;white-space:nowrap;box-shadow:0 20px 50px rgba(0,0,0,.3)');
+  const at = Array.from({ length: 12 }, (_, k) => k < 6 ? 35.26 + k * 0.4 : 37.66 + (k - 6) * 0.2);
+  return { tiles, band, at };
+}, (t, c) => {
+  const order = [5, 6, 1, 10, 4, 7, 2, 9, 0, 11, 3, 8];
+  const chase = t >= 38.86 ? Math.floor((t - 38.86) / 0.1) % 12 : -1;
+  c.tiles.forEach((d, i) => {
+    const k = order.indexOf(i), at = c.at[k], col = i % 4, row = Math.floor(i / 4);
+    const p = eOut(prog(t, at, 0.14)), hot = order[chase] === i;
+    d.style.transform = `translate(${44 + col * 464 + 220}px,${21 + row * 354 + 165}px) translate(-50%,-50%) scale(${(hot ? 1.06 : 1) * (0.85 + 0.15 * p)},${(hot ? 1.06 : 1) * p})`;
+    d.style.opacity = t >= at ? 1 : 0;
+    d.style.outline = hot ? '8px solid #C9A96E' : 'none';
+    d.style.zIndex = hot ? 2 : 1;
+  });
+  const bar = Math.floor((t - 35.26) / 1.6), show = t >= 35.26 && t < 38.86;
+  c.band.textContent = ['当然可以', '好问题。', '我就在这'][clamp(bar, 0, 2)];
+  const bp = eOut(prog(t, 35.26 + bar * 1.6, 0.16));
+  place(c.band, 960, 540, 1, -3, show ? bp : 0);
+  c.band.style.zIndex = 5;
+});
+
+/* 14 我就在这 / 不躲不藏不绕不逃：四格同屏 */
+scene('quad', 39.42, 41.42, el => {
+  el.style.background = C.rose;
+  const head = h(el, 'song', 'position:absolute;left:0;right:0;top:390px;display:flex;justify-content:center;font-size:300px;font-weight:900;color:#FAFAF7;white-space:nowrap');
+  const hc = charsOf(16).slice(0, 4).map(o => { const s = document.createElement('span'); s.textContent = o.c; s.style.display = 'inline-block'; head.appendChild(s); return { ...o, s }; });
+  const conf = [['travel_ferris', '50% 22%', '不躲', C.rose], ['friends_zoo', '50% 30%', '不藏', C.sage], ['travel', '50% 18%', '不绕', C.gold], ['life_done_celebration', '50% 40%', '不逃', C.night]];
+  const q = conf.map(([n, pos, w, col]) => {
+    const d = h(el, 'c', `width:960px;height:540px;overflow:hidden;background:url(${IMG.scene(n)}) ${pos}/cover`);
+    h(d, 'song', `position:absolute;left:36px;bottom:30px;padding:6px 30px 14px;background:${col};color:#FAFAF7;font-size:150px;font-weight:900;line-height:1.1;border-radius:12px`, w);
+    return d;
+  });
+  return { head, hc, q };
+}, (t, c) => {
+  c.hc.forEach(o => { const p = prog(t, o.t, 0.08); o.s.style.opacity = t >= o.t ? 1 : 0; o.s.style.transform = `scale(${lerp(2, 1, eOut(p))})`; });
+  c.head.style.opacity = t < 40.08 ? 1 : 0;
+  [40.08, 40.32, 40.70, 41.02].forEach((at, i) => {
+    const p = eOut(prog(t, at, 0.12)), x = (i % 2) * 960 + 480, y = Math.floor(i / 2) * 540 + 270;
+    const ox = (i % 2 ? 1 : -1) * 480, oy = (i < 2 ? -1 : 1) * 270;
+    place(c.q[i], x + ox * (1 - p) * 0.4, y + oy * (1 - p) * 0.4, 0.6 + 0.4 * p, 0, t >= at ? 1 : 0);
+  });
+});
+
+/* 15 稳稳地接住你：字绕成一圈，最后一个字落进她怀里，接片尾 */
+scene('finale', 41.42, 99, el => {
+  el.style.background = C.paper;
+  const halo = h(el, 'c', 'width:1180px;height:1180px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.28),rgba(201,169,110,0) 65%)');
+  const chibi = sprite(el, 760);
+  const tiles = charsOf(17).map((o, i) => ({ ...o, e: h(el, 'c song', `width:150px;height:150px;border-radius:50%;background:${i === 5 ? C.rose : '#fff'};color:${i === 5 ? '#FAFAF7' : C.ink};display:flex;align-items:center;justify-content:center;font-size:96px;font-weight:900;box-shadow:0 14px 30px rgba(26,23,20,.16)`, o.c) }));
+  const end = h(el, 'c', 'text-align:left;white-space:nowrap');
+  end.innerHTML = `<svg width="520" height="90" viewBox="0 0 520 90" style="display:block;margin:0 0 10px 6px"><path id="arc" d="M10 82 Q260 -40 510 82" fill="none" stroke="#C9A96E" stroke-width="14" stroke-linecap="round"/></svg>
+    <div><span class="song" style="font-size:180px;font-weight:900;color:#1A1714;line-height:1">白艾莉</span><span class="latin" style="font-size:132px;font-style:italic;color:#C25566;margin-left:30px">Alice.</span></div>
+    <div class="song" style="font-size:58px;color:#6B6460;margin-top:34px">当然可以，好问题。</div>
+    <div style="font-size:30px;letter-spacing:.32em;color:#9C9388;margin-top:26px">ALICE.FANS</div>`;
+  const pend = h(el, 'c star', 'width:70px;height:70px', STAR);
+  return { halo, chibi, tiles, end, pend, arc: end.querySelector('#arc') };
+}, (t, c) => {
+  const endP = eOut(prog(t, 43.4, 0.5));
+  let hop = 0;
+  c.tiles.forEach((o, i) => {
+    const ang = (205 + i * 32.5) * Math.PI / 180, last = i === 5;
+    const sx = last ? 960 : 960 + Math.cos(ang) * 470, sy = last ? 800 : 600 + Math.sin(ang) * 430;
+    const fall = prog(t, o.t - 0.32, 0.32), y = t < o.t ? lerp(-160, sy, eIn(fall)) : sy;
+    const land = prog(t, o.t, 0.18), sq = t >= o.t ? 1 - Math.sin(land * Math.PI) * 0.22 : 1;
+    const spin = t >= 43.16 ? (t - 43.16) * 0.8 : 0;
+    const fx = last ? sx : 960 + Math.cos(ang + spin) * 470, fy = last ? y : (t >= o.t ? 600 + Math.sin(ang + spin) * 430 : y);
+    o.e.style.transform = `translate(${lerp(fx, 960, endP)}px,${lerp(fy, 600, endP)}px) translate(-50%,-50%) scale(${(2 - sq) * (1 - endP)},${sq * (1 - endP)})`;
+    o.e.style.opacity = t >= o.t - 0.32 ? 1 - endP : 0;
+    hop = Math.max(hop, bump(t, o.t, 0.26));
+  });
+  place(c.halo, lerp(960, 520, endP), 600, 0.6 + eOut(prog(t, 43.16, 0.5)) * 0.4, 0, t >= 43.16 ? 1 : 0);
+  c.chibi.set(hop > 0.25 ? 'cheer' : t >= 43.4 ? 'wave' : beatPose(t, ['stand', 'wave']));
+  place(c.chibi, lerp(960, 520, endP), 680 - hop * 40 * shake, lerp(1, 0.92, endP), 0, 1);
+  place(c.end, 1300, 540, 1, 0, endP);
+  c.end.style.transform += ` translateY(${(1 - endP) * 40}px)`;
+  const len = 640;
+  c.arc.style.strokeDasharray = len;
+  c.arc.style.strokeDashoffset = len * (1 - eOut(prog(t, 43.5, 0.6)));
+  const tw = prog(t, 44.0, 0.3);
+  place(c.pend, 1330, 700, 0.4 + eBack(tw) * 0.6 + Math.sin(t * 6) * 0.04, t * 20, t >= 44.0 ? 1 : 0);
+});
+
+/* 字幕、换段白闪、调试信息 */
+const caption = h(canvas, 'caption song');
+const flash = h(canvas, 'flash');
+const debug = h(canvas, 'debug');
+const CUTS = [0.94, 6.6, 13.72, 26.44, 29.68, 39.42];
+let capLine = -1, captionsOn = true;
+function drawCaption(t) {
+  let li = -1;
+  LYRICS.forEach((L, i) => { if (t >= L.w[0][0] - 0.2 && t < L.end + 0.25) li = i; });
+  const show = captionsOn && li >= 0 && t < 43.4;
+  caption.style.opacity = show ? 1 : 0;
+  if (li < 0) return;
+  if (li !== capLine) { capLine = li; caption.innerHTML = LYRICS[li].w.map(([, w]) => `<i>${w}</i>`).join(''); }
+  [...caption.children].forEach((e, i) => e.classList.toggle('on', t >= LYRICS[li].w[i][0]));
+}
+
+const params = new URLSearchParams(location.search);
+const audio = document.getElementById('audio');
+const $ = id => document.getElementById(id);
+const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+let raf = 0, current = '';
+function render(t = audio.currentTime || 0) {
+  for (const s of scenes) {
+    const on = t >= s.a && t < s.b;
+    s.el.style.display = on ? 'block' : 'none';
+    if (on) { s.draw(t, s.ctx, s.el); current = s.id; }
+  }
+  if (t < 0) scenes[0].el.style.display = 'block';
+  let f = 0;
+  CUTS.forEach(cut => { if (t >= cut && t < cut + 0.14) f = Math.max(f, (1 - (t - cut) / 0.14) * 0.5); });
+  flash.style.opacity = calm ? 0 : f;
+  drawCaption(t);
+  if (params.has('debug')) { debug.style.display = 'block'; debug.textContent = t.toFixed(2) + 's · ' + current; }
+  const d = Number.isFinite(audio.duration) ? audio.duration : DURATION;
+  $('seek').value = t;
+  $('time').textContent = fmt(t) + ' / ' + fmt(d);
+}
+function tick() { render(); if (!audio.paused) raf = requestAnimationFrame(tick); }
+
+const frame = $('frame');
+function fit() {
+  const k = frame.clientWidth / 1920, kh = frame.clientHeight / 1080, s = Math.min(k, kh);
+  canvas.style.transform = `translate(${(frame.clientWidth - 1920 * s) / 2}px,${(frame.clientHeight - 1080 * s) / 2}px) scale(${s})`;
+}
+new ResizeObserver(fit).observe(frame);
+fit();
+
+function preload() {
+  const list = [...POSE_NAMES.map(p => IMG.pose(p)), IMG.icon, ...FRIENDS.map(f => IMG.friend(f[0])), ...UI.map(u => IMG.ui(u[0])), ...SCENE_FILES.map(IMG.scene)];
+  let done = 0, failed = 0;
+  return Promise.race([
+    Promise.all(list.map(src => new Promise(res => {
+      const i = new Image();
+      i.onload = () => { done++; $('play').textContent = `加载 ${Math.round(done / list.length * 100)}%`; res(); };
+      i.onerror = () => { failed++; res(); };
+      i.src = src;
+    }))),
+    new Promise(res => setTimeout(res, 12000)),
+  ]).then(() => failed);
+}
+
+$('play').onclick = async () => {
+  if (!audio.paused) { audio.pause(); return; }
+  try { if (audio.ended || audio.currentTime >= DURATION - 0.05) audio.currentTime = 0; await audio.play(); }
+  catch (e) { $('status').textContent = '无法播放音频：' + (e && e.message ? e.message : '浏览器拒绝了播放请求'); $('load').hidden = false; }
+};
+audio.addEventListener('play', () => { cancelAnimationFrame(raf); $('play').textContent = '暂停'; tick(); });
+audio.addEventListener('pause', () => { cancelAnimationFrame(raf); $('play').textContent = '播放'; render(); });
+audio.addEventListener('ended', () => { $('play').textContent = '重播'; render(DURATION); });
+audio.addEventListener('loadedmetadata', () => { if (Number.isFinite(audio.duration)) $('seek').max = audio.duration; render(); });
+audio.addEventListener('seeked', () => render());
+audio.addEventListener('error', () => { $('status').textContent = '没有找到 assets/song.mp3，可以点「导入音频」手动选择歌曲。'; $('load').hidden = false; });
+$('seek').oninput = () => { audio.currentTime = Number($('seek').value); render(Number($('seek').value)); };
+$('cc').onclick = () => { captionsOn = !captionsOn; $('cc').setAttribute('aria-pressed', String(captionsOn)); render(); };
+$('fs').onclick = async () => {
+  try { if (document.fullscreenElement) await document.exitFullscreen(); else await frame.requestFullscreen(); }
+  catch (e) { $('status').textContent = '当前浏览器不支持页面全屏，请使用浏览器自带的全屏。'; }
+};
+/* 换装：按 OUTFITS 顺序轮换，地址栏同步 ?outfit=，刷新后保持 */
+function applyOutfit() {
+  $('outfit').textContent = '换装：' + OUTFITS[outfit].name;
+  SPRITES.forEach(b => b.set(b.pose));
+  render();
+}
+$('outfit').onclick = () => {
+  const keys = Object.keys(OUTFITS);
+  outfit = keys[(keys.indexOf(outfit) + 1) % keys.length];
+  params.set('outfit', outfit);
+  history.replaceState(null, '', '?' + params.toString());
+  applyOutfit();
+};
+$('load').onclick = () => $('file').click();
+let blobUrl = null;
+$('file').onchange = () => {
+  const f = $('file').files[0];
+  if (!f) return;
+  audio.pause();
+  if (blobUrl) URL.revokeObjectURL(blobUrl);
+  blobUrl = URL.createObjectURL(f);
+  audio.src = blobUrl; audio.load();
+  $('status').textContent = '已导入：' + f.name;
+};
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type !== 'range') return;
+  if (e.code === 'Space') { e.preventDefault(); $('play').click(); }
+  if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') { e.preventDefault(); audio.currentTime = clamp(audio.currentTime + (e.code === 'ArrowRight' ? 1 : -1), 0, DURATION); render(); }
+});
+$('outfit').textContent = '换装：' + OUTFITS[outfit].name;
+if (params.get('embed') === '1') document.body.classList.add('embed');
+if (params.get('captions') === '0') { captionsOn = false; $('cc').setAttribute('aria-pressed', 'false'); }
+
+preload().then(failed => {
+  $('play').disabled = false;
+  $('play').textContent = '播放';
+  if (failed) $('status').textContent = `有 ${failed} 张插画没有加载成功，画面会缺图，请检查 assets 目录。`;
+  const freeze = params.get('t');
+  const go = () => { render(freeze === null ? 0 : Number(freeze)); document.body.dataset.ready = '1'; };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => requestAnimationFrame(go));
+});
+render(0);
+</script>
+</body>
+</html>
