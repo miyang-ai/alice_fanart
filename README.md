@@ -1,5 +1,7 @@
 # alice_fanart
 
+在线浏览：[miyang-ai.github.io/alice_fanart](https://miyang-ai.github.io/alice_fanart/)（首页由 `scripts/build_site.py` 生成，新增成图后重跑即可）
+
 Alice（白艾莉）、她的朋友们与洛小山的二创素材库：人物资料、三视图、垫图规范、提示词和成图案例。
 
 <p align="center">
@@ -38,7 +40,7 @@ outputs/          成图案例，按「日期_事项」分目录，每张图带�
                   其中 2026-10-16_alice_mv_… 是像素 MV 整个项目：源码、绿幕素材、垫图与全部提示词
 docs/垫图逻辑.md   垫图规范：参考图职责、身份锁、画风与提示词写法、存档与审计
 workflows/        新建虚构角色、数码涟漪修复等工作流
-scripts/          可选的生图网关脚本
+scripts/          可选的生图网关脚本；build_site.py 生成在线首页 index.html 与 site/ 缩略图
 ```
 
 ## 使用
