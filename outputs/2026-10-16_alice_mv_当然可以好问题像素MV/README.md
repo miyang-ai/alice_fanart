@@ -21,7 +21,6 @@ assets/               歌曲、UI 图、朋友头像、场景图、塔罗牌等�
 sprites/              像素 Alice 与黄毛的 SVG，sprites.js 为轮廓与尺寸索引
 tools/                pixel2svg.py（绿幕图转像素 SVG）、build_sprites.py（生成 sprites.js）
 素材库/                绿幕原稿、垫图、全部生图提示词，详见其中的 README.md
-过程/备份代码/         各版本 index.html 与早期小人脚本
 预览/                  关键帧拼图与终版检查截图
 ```
 
@@ -37,6 +36,6 @@ tools/                pixel2svg.py（绿幕图转像素 SVG）、build_sprites.p
 ## 注意
 
 - 绿幕原稿与 SVG 的网格间距要一致（每格约 3 像素），换装时人物大小与脚位才不会跳。具体参数见 `素材库/README.md`。
-- 本目录不含 `process/` 下的过程截图（约 68 MB），需要时在原机器 `~/Movies/alice-mv/process/` 查看。
+- 制作过程文件（历史版本代码、过程截图）不放进仓库，只在原机器 `~/Movies/alice-mv/process/`。
 
 整理时间：2026-10-16。

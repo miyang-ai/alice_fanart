@@ -1,6 +1,6 @@
 # alice_fanart
 
-在线浏览：[miyang-ai.github.io/alice_fanart](https://miyang-ai.github.io/alice_fanart/)（首页由 `scripts/build_site.py` 生成，新增成图后重跑即可）
+在线浏览：[fanart.alice.fans](https://fanart.alice.fans/)（首页由 `scripts/build_site.py` 生成，新增成图后重跑即可）
 
 Alice（白艾莉）、她的朋友们与洛小山的二创素材库：人物资料、三视图、垫图规范、提示词和成图案例。
 

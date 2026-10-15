@@ -60,7 +60,7 @@ python3 04_转SVG工具/build_sprites.py   # 重新生成 sprites.js
 这次没有复制的内容，仍留在原处：
 
 - `~/Documents/GitHub/alice_fanart/refs/alice/`：Alice 的完整设定图库（`02_垫图` 里只取了生图时用到的 5 张）。
-- `~/Movies/alice-mv/process/`：程序化小人、网格检测、MV 预览截图等过程文件。
+- `~/Movies/alice-mv/process/`：程序化小人、网格检测、历史版本代码、MV 预览截图等过程文件，不在仓库里。
 - Cursor 的图片缓存目录里还有这些原稿的副本，缓存可能被清理，以这个素材库为准。
 
 整理时间：2026-10-16。
